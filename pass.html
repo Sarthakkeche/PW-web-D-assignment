@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Additional styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="max-w-md mx-auto p-8 bg-white rounded-lg shadow-lg">
+        <h2 class="text-xl font-bold mb-4">Password Generator</h2>
+        <div class="mb-4">
+            <label class="block mb-2" for="passwordLength">Password Length:</label>
+            <input class="w-full border border-gray-300 rounded-md px-3 py-2" type="number" id="passwordLength" value="8" min="4" max="20">
+        </div>
+        <div class="mb-4">
+            <label class="block mb-2">Complexity:</label>
+            <label class="inline-flex items-center mr-4">
+                <input type="checkbox" class="form-checkbox" id="upperCaseCheckbox" checked>
+                <span class="ml-2">Uppercase</span>
+            </label>
+            <label class="inline-flex items-center mr-4">
+                <input type="checkbox" class="form-checkbox" id="lowerCaseCheckbox" checked>
+                <span class="ml-2">Lowercase</span>
+            </label>
+            <label class="inline-flex items-center mr-4">
+                <input type="checkbox" class="form-checkbox" id="numberCheckbox" checked>
+                <span class="ml-2">Numbers</span>
+            </label>
+            <label class="inline-flex items-center">
+                <input type="checkbox" class="form-checkbox" id="symbolCheckbox" checked>
+                <span class="ml-2">Symbols</span>
+            </label>
+        </div>
+        <div class="mb-4">
+            <label class="block mb-2" for="generatedPassword">Generated Password:</label>
+            <input class="w-full border border-gray-300 rounded-md px-3 py-2" type="text" id="generatedPassword" readonly>
+        </div>
+        <div>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600" onclick="generatePassword()">Generate Password</button>
+            <button class="bg-green-500 text-white px-4 py-2 rounded-md ml-2 hover:bg-green-600" onclick="copyPassword()">Copy Password</button>
+        </div>
+    </div>
+
+    <script>
+        function generatePassword() {
+            const length = document.getElementById('passwordLength').value;
+            const includeUpperCase = document.getElementById('upperCaseCheckbox').checked;
+            const includeLowerCase = document.getElementById('lowerCaseCheckbox').checked;
+            const includeNumbers = document.getElementById('numberCheckbox').checked;
+            const includeSymbols = document.getElementById('symbolCheckbox').checked;
+
+            let charset = '';
+            if (includeUpperCase) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            if (includeLowerCase) charset += 'abcdefghijklmnopqrstuvwxyz';
+            if (includeNumbers) charset += '0123456789';
+            if (includeSymbols) charset += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * charset.length);
+                password += charset[randomIndex];
+            }
+
+            document.getElementById('generatedPassword').value = password;
+        }
+
+        function copyPassword() {
+            const passwordInput = document.getElementById('generatedPassword');
+            passwordInput.select();
+            document.execCommand('copy');
+            alert('Password copied to clipboard');
+        }
+    </script>
+</body>
+</html>
